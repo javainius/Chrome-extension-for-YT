@@ -3,26 +3,46 @@ const desirableTimeSpan = 360; // seconds
 
 vid.addEventListener('ended', function(e) {
     var listOfVideos = getElementByXpath(
-        '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[11]/ytd-watch-next-secondary-results-renderer/div[2]')
-    // var achors = listOfVideos.getElementsByTagName('a');
-    // console.log(listOfVideos.childNodes);
-    // listOfVideos.childNodes.forEach(removeVideo)
-    getPlayableVideo(listOfVideos.childNodes);
-    // achors[0].click();
+        '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[11]/ytd-watch-next-secondary-results-renderer/div[2]');
+    
+    if(listOfVideos === null){
+        listOfVideos = getElementByXpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[2]/div/div[3]/ytd-watch-next-secondary-results-renderer/div[2]")
+    }
+    var nextVideo = getNextVideo(listOfVideos.childNodes);
+    var nextVideoAchors = nextVideo.getElementsByTagName('a');
+
+    nextVideoAchors[0].click();
 });
 
 function getElementByXpath(path) {
     return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 }
 
-function getPlayableVideo(listOfVideos){
+function getNextVideo(listOfVideos){
     var arrayOfVideos = getRidOfUndesirableVideos(listOfVideos);
-    
+
+    return findVideoWithMostViews(arrayOfVideos);    
 }
 
 function getRidOfUndesirableVideos(listOfVideos){
     var arrayOfVideos = Array.from(listOfVideos);
     return arrayOfVideos.filter(video => !removeVideo(video));
+}
+
+function findVideoWithMostViews(arrayOfVideos){
+    var mostViews = getNumberOfViews(arrayOfVideos[0]);
+    var videoWithMostViews = arrayOfVideos[0];
+
+    for(var video of arrayOfVideos){
+        numberOfViews = getNumberOfViews(video);
+
+        if(mostViews < numberOfViews){
+            mostViews = numberOfViews;
+            videoWithMostViews = video;
+        }
+    }
+
+    return videoWithMostViews;
 }
 
 function removeVideo(video){
@@ -69,4 +89,18 @@ function convertToSeconds(timeStringParts){
     var seconds = parseInt(timeStringParts[1]);
 
     return minutes * 60 + seconds;
+}
+
+function getNumberOfViews(video){
+    var views = video.querySelector("span.ytd-video-meta-block").innerText
+    var numberOfViews = parseFloat(views.replace(',', '.')) * getMultiplier(views);
+    
+    return numberOfViews;
+}
+
+function getMultiplier(views){
+    if(views.search("mln") !== -1) return 1000000;
+    if(views.search("tūkst") !== -1) return 1000;
+    if(views.search("mlrd") !== -1) return 1000000000;
+    return 1;
 }
