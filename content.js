@@ -1,5 +1,3 @@
-//lalalaaallallalalallala
-
 var vid =  document.querySelector('video');
 
 allVidDiv =  document.getElementById('items');
