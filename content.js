@@ -16,21 +16,21 @@ function getElementByXpath(path) {
 }
 
 function getPlayableVideo(listOfVideos){
-    getRidOfUndesirableVideos(listOfVideos);
+    var arrayOfVideos = getRidOfUndesirableVideos(listOfVideos);
+    
 }
 
 function getRidOfUndesirableVideos(listOfVideos){
     var arrayOfVideos = Array.from(listOfVideos);
-    arrayOfVideos = arrayOfVideos.filter(video => !removeVideo(video));
-
-    console.log(arrayOfVideos);
+    return arrayOfVideos.filter(video => !removeVideo(video));
 }
 
 function removeVideo(video){
-    if (isVideoTimeStatusSuitable(video)){
+
+    if (isVideoTimeStatusSuitable(video) && !isVideoAlreadyWatched(video)){
         return false;
     }
-    
+
     return true;
 }
 
@@ -57,7 +57,11 @@ function isVideoTimeStatusSuitable(video){
 }
 
 function isVideoAlreadyWatched(video){
-    
+    var watchedIndicator = video.querySelector("#progress");
+
+    if(watchedIndicator === null)
+        return false;
+    return true;
 }
 
 function convertToSeconds(timeStringParts){
