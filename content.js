@@ -1,4 +1,4 @@
-
+//lalalaaallallalalallala
 
 var vid =  document.querySelector('video');
 
