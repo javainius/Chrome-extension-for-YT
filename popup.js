@@ -5,26 +5,22 @@ document.addEventListener('DOMContentLoaded', function () {
     function onclick () {
         chrome.tabs.query({currentWindow: true, active: true},
         function (tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, 'hi', setCount)
+            let checkBox = document.querySelector('#validator');
+            chrome.tabs.sendMessage(tabs[0].id, checkBox.checked, setCount);
         })
     }
-
+    function setCount (res) {
+        console.log(res.message);
+    }
 }, false)
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     document.querySelector('button').addEventListener('click', 
-//     onclick, false)
 
-//     function onclick () {
-//         chrome.tabs.query({currentWindow: true, active: true},
-//         function (tabs) {
-//             chrome.tabs.sendMessage(tabs[0].id, 'hi', setCount)
-//         })
-//     }
 
-//     function setCount (res) {
-//         const div = document.createElement('div')
-//         div.textContent = `${res.count} bears ${res.message}`
-//         document.body.appendChild(div)
-//     }
-// }, false)
+chrome.tabs.query({currentWindow: true, active: true},
+    function (tabs) {
+        let checkBox = document.querySelector('#validator');
+        chrome.tabs.sendMessage(tabs[0].id, checkBox.checked, setCount);
+    })
+function setCount (res) {
+    console.log(res.message);
+}
