@@ -1,0 +1,15 @@
+body{
+    width: 81px;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    background-color: rgb(43, 5, 5);
+    color: cornsilk;
+}
+
+h4{
+    margin: 0;
+}
+
+h5{
+    display: inline;
+}

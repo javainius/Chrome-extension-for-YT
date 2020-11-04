@@ -2,10 +2,19 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./toggle.css">
+        <link rel="stylesheet" href="./body.css">
         <title>Document</title>
     </head>
     <body>
-        <input onclick="onClick()" id="validator" type="checkbox" data-toggle="toggle" data-size="xs">
+        <h4>Auto play</h4><br/>
+        <h5>OFF</h5 class="off">
+        <label class="switch">
+            <input type="checkbox" onclick="onClick()" id="validator">
+            <span class="slider round"></span>
+        </label>
+        <h5>ON</h5 class="on">
         <script src="popup.js" charset="utf-8"></script>
     </body>
 </html>
