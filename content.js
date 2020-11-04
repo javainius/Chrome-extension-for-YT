@@ -1,31 +1,24 @@
-chrome.runtime.onMessage.addListener(function (checkBoxBool, sender,
-    sendResponse) {
-    if (checkBoxBool){
-        console.log("auto play is enabled")
-        enableAutoVideoPlay();
-    }
-    else{
-        console.log("auto play is disabled")
-    }
-    sendResponse({ message: "request"})
-})
-
-const enableAutoVideoPlay = () => {
-    const vid =  document.querySelector('video');
+const vid =  document.querySelector('video');
     const desirableTimeSpan = 360; // seconds
     
     vid.addEventListener('ended', function(e) {
-        console.log("asfasdfasdfasdfasdf")
-        let listOfVideos = getElementByXpath(
-            '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[11]/ytd-watch-next-secondary-results-renderer/div[2]');
-        
-        if(listOfVideos === null){
-            listOfVideos = getElementByXpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[2]/div/div[3]/ytd-watch-next-secondary-results-renderer/div[2]")
-        }
-        let nextVideo = getNextVideo(listOfVideos.childNodes);
-        let nextVideoAchors = nextVideo.getElementsByTagName('a');
-    
-        nextVideoAchors[0].click();
+        chrome.storage.local.get(["checkBoxBool"], function(data) {
+            if(data.checkBoxBool) {
+                let listOfVideos = getElementByXpath(
+                    '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[11]/ytd-watch-next-secondary-results-renderer/div[2]');
+                
+                if(listOfVideos === null){
+                    listOfVideos = getElementByXpath("/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[2]/div/div[3]/ytd-watch-next-secondary-results-renderer/div[2]")
+                }
+                let nextVideo = getNextVideo(listOfVideos.childNodes);
+                let nextVideoAchors = nextVideo.getElementsByTagName('a');
+            
+                nextVideoAchors[0].click();
+            } 
+            else {
+                console.log("autoplay is disabled")
+            }
+        });
     });
     
     function getElementByXpath(path) {
@@ -118,4 +111,3 @@ const enableAutoVideoPlay = () => {
         if(views.search("mlrd") !== -1) return 1000000000;
         return 1;
     }
-}
